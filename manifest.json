@@ -1,0 +1,33 @@
+{
+  "manifest_version": 3,
+  "name": "dira tracker",
+  "version": "1.3.7",
+  "permissions": [
+    "scripting",
+    "notifications"
+  ],
+  "host_permissions": [
+    "https://www.dira.moch.gov.il/ProjectsList"
+  ],
+  "action": {
+    "default_popup": "popup.html"
+  },
+  "icons": {
+    "16": "home-button.png",
+    "48": "home-button.png",
+    "128": "home-button.png"
+  },
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "<all_urls>"
+      ],
+      "js": ["content.js"]
+    }
+  ]
+}
+
+
