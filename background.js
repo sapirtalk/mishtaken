@@ -23,7 +23,6 @@ function showNotification(message) {
 
 
 
-
  function trackOpenLotteriesCount() {
    fetch("https://www.dira.moch.gov.il/api/Invoker?method=Projects&param=%3FfirstApplicantIdentityNumber%3D%26secondApplicantIdentityNumber%3D%26ProjectStatus%3D4%26Entitlement%3D1%26PageNumber%3D1%26PageSize%3D50%26IsInit%3Dtrue%26", {
     "headers": {
@@ -55,9 +54,6 @@ function showNotification(message) {
           const newLotteriesCount = openLotteriesCount - previousCount;
           showNotification("יש " + newLotteriesCount  + "  הגרלות חדשות ! לפרטים נוספים לחץ כאן");
         }
-        else if (openLotteriesCount <= previousCount) {
-          showNotification("לא מצאנו הגרלות חדשות");
-        }
         previousCount = openLotteriesCount;
      })
      .catch(error => {
@@ -67,5 +63,16 @@ function showNotification(message) {
  
 
  // call the function every hour
-  setInterval(trackOpenLotteriesCount, 3600000);
+ function startworking(){
+
   trackOpenLotteriesCount();
+
+  
+  setInterval(trackOpenLotteriesCount, 1000*60*60);
+  
+ }
+
+ 
+
+
+  startworking();
