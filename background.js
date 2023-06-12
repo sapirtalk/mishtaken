@@ -3,13 +3,15 @@ chrome.runtime.onInstalled.addListener(() => {
  });
  
  let previousCount = 0;
+ let testCount = 0;
+ let newTestCount = 1;
 
 
 function showNotification(message) {
   chrome.notifications.create({
     type: 'basic',
     iconUrl: 'home-button.png',
-    title: 'עדכון חדש!',
+    title: ' עדכון חדש!',
     message: message
   });
 
@@ -48,13 +50,16 @@ function showNotification(message) {
        return response.json();
      })
      .then(data => {
-       console.log(data); // Handle the response data
+        console.log(data);
         const openLotteriesCount = data['OpenLotteriesCount'];
         if (openLotteriesCount > previousCount) {
           const newLotteriesCount = openLotteriesCount - previousCount;
-          showNotification("יש " + newLotteriesCount  + "  הגרלות חדשות ! לפרטים נוספים לחץ כאן");
+          showNotification("יש " + newLotteriesCount  + "  הגרלות חדשות שנפתחו! לפרטים נוספים לחץ כאן");
         }
         previousCount = openLotteriesCount;
+        chrome.storage.local.set({ previousCount });
+        console.log("previousCount: " + previousCount + " openLotteriesCount: " + openLotteriesCount);
+        console.log("the extension is working");
      })
      .catch(error => {
        console.error(error); // Handle any errors
@@ -68,7 +73,7 @@ function showNotification(message) {
   trackOpenLotteriesCount();
 
   
-  setInterval(trackOpenLotteriesCount, 1000*60*60);
+  setInterval(trackOpenLotteriesCount, 1000 * 60 * 60); // 1000 * 60 * 60 = 1 hour in milliseconds
   
  }
 
@@ -76,3 +81,7 @@ function showNotification(message) {
 
 
   startworking();
+
+  chrome.storage.local.get(['previousCount'], (result) => {
+    previousCount = result.previousCount || 0;
+  });
